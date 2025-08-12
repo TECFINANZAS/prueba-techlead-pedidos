@@ -1,23 +1,19 @@
-# Etapa 1: Compilación
+# Etapa 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiar y restaurar dependencias (busca el .csproj en cualquier subcarpeta)
-COPY . .
-RUN dotnet restore $(find . -name "*.csproj")
+COPY RestfulPrueba.csproj ./
+RUN dotnet restore RestfulPrueba.csproj
 
-# Publicar en Release
-RUN dotnet publish $(find . -name "*.csproj") -c Release -o /app/out
+COPY . ./
+RUN dotnet publish RestfulPrueba.csproj -c Release -o /app/out
 
-# Etapa 2: Ejecución
+# Etapa 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-# Copiar binarios publicados
 COPY --from=build /app/out .
 
-# Configurar para que escuche el puerto asignado por Render
 ENV ASPNETCORE_URLS=http://+:${PORT}
 
-# Ejecutar la app (detecta el .dll automáticamente)
-CMD ["sh", "-c", "dotnet $(find . -name '*.dll' | head -n 1)"]
+ENTRYPOINT ["dotnet", "RestfulPrueba.dll"]
