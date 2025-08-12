@@ -1,0 +1,11 @@
+# Archivos y carpetas de Visual Studio
+.vs/
+*.vsidx
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Binarios y temporales
+bin/
+obj/

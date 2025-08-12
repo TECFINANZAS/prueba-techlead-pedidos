@@ -1,0 +1,6 @@
+@RestfulPrueba_HostAddress = http://localhost:5087
+
+GET {{RestfulPrueba_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
